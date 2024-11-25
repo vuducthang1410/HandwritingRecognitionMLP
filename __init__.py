@@ -48,10 +48,11 @@ if '__main__' == __name__:
     # Tạo đối tượng dữ liệu
     data_set = DATA_SET(path_train_file, path_test_file)
 
-    hidden_sizes = [700, 485, 150, 73]  # 6 lớp ẩn
+    hidden_sizes = [700, 485, 250, 113, 53]  # 6 lớp ẩn
 
     # Khởi tạo mô hình với 6 lớp ẩn
-    model = MLP(input_size=28 * 28, hidden_sizes=hidden_sizes, output_size=10)
+    model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=10, learning_rate=0.05, epoch=5)
+    model.initialize_weights()
 
     # Lấy dữ liệu huấn luyện và kiểm tra
     train_data, train_label = data_set.get_train_data()
@@ -62,7 +63,7 @@ if '__main__' == __name__:
     test_labels_one_hot = one_hot_encode(test_label)
 
     # Huấn luyện mô hình
-    model.train(train_data, train_labels_one_hot, epochs=1000)
+    model.train(train_data, train_labels_one_hot)
 
     # Dự đoán và tính toán độ chính xác
     predictions = model.predict(test_data)

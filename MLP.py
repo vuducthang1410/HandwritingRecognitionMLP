@@ -1,113 +1,124 @@
 import numpy as np
 
+
+def relu_prime(x):
+    return np.where(x > 0, 1, 0)
+
+
+def softmax(x):
+    exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+
+def relu(x):
+    return np.maximum(0, x)
+
+
 class MLP:
-    def __init__(self, input_size, hidden_sizes, output_size, learning_rate=0.05, alpha=0.01):
-        self.input_size = input_size
-        self.hidden_sizes = hidden_sizes
+    def __init__(self, features, hidden_layers, output_size, learning_rate, epoch):
+        self.features = features
+        self.hidden_layers = hidden_layers
         self.output_size = output_size
         self.learning_rate = learning_rate
-        self.alpha = alpha  # Leaky ReLU slope
+        self.epoch = epoch
 
-        # Initialize weights and biases using He initialization
-        self.W = []
-        self.b = []
+        # Khởi tạo trọng số và bias
+        self.weights = []
+        self.biases = []
 
-        # Weights and biases from input layer to first hidden layer
-        self.W.append(np.random.randn(self.input_size, self.hidden_sizes[0]) * np.sqrt(2 / self.input_size))
-        self.b.append(np.zeros((1, self.hidden_sizes[0])))
+    def initialize_weights(self):
+        np.random.seed(42)  # Đảm bảo khởi tạo ngẫu nhiên tái lập được
 
-        # Weights and biases for hidden layers
-        for i in range(1, len(self.hidden_sizes)):
-            self.W.append(np.random.randn(self.hidden_sizes[i - 1], self.hidden_sizes[i]) * np.sqrt(2 / self.hidden_sizes[i - 1]))
-            self.b.append(np.zeros((1, self.hidden_sizes[i])))
+        # Xây dựng danh sách kích thước các lớp
+        layer_sizes = [self.features] + self.hidden_layers + [self.output_size]
 
-        # Weights and biases from last hidden layer to output layer
-        self.W.append(np.random.randn(self.hidden_sizes[-1], self.output_size) * np.sqrt(2 / self.hidden_sizes[-1]))
-        self.b.append(np.zeros((1, self.output_size)))
+        # Khởi tạo trọng số và bias cho các lớp
+        for i in range(len(layer_sizes) - 1):
+            weight_matrix = np.random.randn(layer_sizes[i], layer_sizes[i + 1]) * np.sqrt(2 / layer_sizes[i])
+            bias_vector = np.zeros((1, layer_sizes[i + 1]))  # Bias khởi tạo bằng 0
+            self.weights.append(weight_matrix)
+            self.biases.append(bias_vector)
 
-    def leaky_relu(self, z):
-        return np.maximum(self.alpha * z, z)
+    def forward_propagation(self, X):
+        self.a = []  # danh sách chứa các giá trị của activation
+        self.z = []  # danh sách chứa các giá trị của z
 
-    def leaky_relu_derivative(self, z):
-        return np.where(z > 0, 1, self.alpha)
+        activation = X
+        self.a.append(activation)  # Lưu giá trị đầu vào (X) là giá trị đầu tiên của activation
 
-    def sigmoid(self, z):
-        return 1 / (1 + np.exp(-z))
+        # Lan truyền xuôi qua các lớp ẩn
+        for i in range(len(self.hidden_layers)):
+            z = np.dot(activation, self.weights[i]) + self.biases[i]
+            self.z.append(z)
+            activation = relu(z)  # Áp dụng hàm ReLU
+            self.a.append(activation)  # Lưu giá trị activation
 
-    def sigmoid_derivative(self, z):
-        return self.sigmoid(z) * (1 - self.sigmoid(z))
-
-    def softmax(self, z):
-        exp_z = np.exp(z - np.max(z, axis=1, keepdims=True))
-        return exp_z / np.sum(exp_z, axis=1, keepdims=True)
-
-    def compute_loss(self, output, y):
-        m = y.shape[0]
-        return -np.mean(np.sum(y * np.log(output + 1e-8), axis=1))  # Cross-Entropy Loss
-
-    def forward(self, X):
-        self.a = [X]  # Store activations
-        self.z = []   # Store pre-activations
-
-        # Forward pass through hidden layers
-        for i in range(len(self.hidden_sizes)):
-            z_i = np.dot(self.a[-1], self.W[i]) + self.b[i]
-            a_i = self.leaky_relu(z_i)  # Use Leaky ReLU activation for hidden layers
-            self.z.append(z_i)
-            self.a.append(a_i)
-
-        # Output layer with softmax
-        z_output = np.dot(self.a[-1], self.W[-1]) + self.b[-1]
-        a_output = self.softmax(z_output)  # Softmax for output layer
+        # Xử lý lớp đầu ra (softmax cho phân loại đa lớp)
+        z_output = np.dot(activation, self.weights[-1]) + self.biases[-1]
         self.z.append(z_output)
-        self.a.append(a_output)
+        output = softmax(z_output)
+        self.a.append(output)
 
-        return a_output
+        return output
 
-    def backward(self, X, y):
+    def backward_propagation(self, X, y):
         m = X.shape[0]
+        self.d_weights = []
+        self.d_biases = []
 
-        # Initialize gradients for weights and biases
-        dW = [None] * len(self.W)
-        db = [None] * len(self.b)
+        # Tính gradient tại lớp đầu ra
+        delta = (self.a[-1] - y)  # Đối với softmax, lỗi là sự khác biệt giữa output và ground truth
+        dW = np.dot(self.a[-2].T, delta) / m
+        db = np.sum(delta, axis=0, keepdims=True) / m
+        self.d_weights.append(dW)
+        self.d_biases.append(db)
 
-        # Compute gradient for output layer
-        dz = self.a[-1] - y
-        dW[-1] = np.dot(self.a[-2].T, dz) / m
-        db[-1] = np.sum(dz, axis=0, keepdims=True) / m
+        # Lan truyền ngược qua các lớp ẩn
+        for i in range(len(self.hidden_layers) - 1, -1, -1):
+            delta = np.dot(delta, self.weights[i + 1].T) * relu_prime(self.z[i])
+            dW = np.dot(self.a[i].T, delta) / m
+            db = np.sum(delta, axis=0, keepdims=True) / m
+            self.d_weights.insert(0, dW)  # Lưu gradient vào đúng vị trí
+            self.d_biases.insert(0, db)
 
-        # Backpropagate through hidden layers
-        for i in range(len(self.hidden_sizes) - 1, -1, -1):
-            dz = np.dot(dz, self.W[i + 1].T) * self.leaky_relu_derivative(self.z[i])
-            dW[i] = np.dot(self.a[i].T, dz) / m
-            db[i] = np.sum(dz, axis=0, keepdims=True) / m
+    def update_weights(self):
+        for i in range(len(self.weights)):
+            self.weights[i] -= self.learning_rate * self.d_weights[i]
+            self.biases[i] -= self.learning_rate * self.d_biases[i]
 
-        # Update weights and biases with gradient descent
-        for i in range(len(self.W)):
-            self.W[i] -= self.learning_rate * dW[i]
-            self.b[i] -= self.learning_rate * db[i]
+    def compute_loss(self, y_pred, y_true):
+        m = y_true.shape[0]
+        loss = -np.sum(y_true * np.log(y_pred)) / m  # Cross entropy loss
+        return loss
 
-    def train(self, X, y, epochs=10, decay_factor=0.99, gradient_clip_value=5.0):
-        for epoch in range(epochs):
-            output = self.forward(X)
-            self.backward(X, y)
+    def compute_accuracy(self, X, y):
+        # Dự đoán nhãn
+        predictions = self.predict(X)
+        # So sánh dự đoán với nhãn thực
+        correct_predictions = np.sum(predictions == y)
+        accuracy = correct_predictions / X.shape[0]
+        return accuracy
+    def train(self, X_train, y_train, batch_size=32):
+        m = X_train.shape[0]
+        for epoch in range(self.epoch):
+            for i in range(0, m, batch_size):
+                X_batch = X_train[i:i + batch_size]
+                y_batch = y_train[i:i + batch_size]
 
-            # Clip gradients to prevent exploding gradients
-            for i in range(len(self.W)):
-                np.clip(self.W[i], -gradient_clip_value, gradient_clip_value, out=self.W[i])
-                np.clip(self.b[i], -gradient_clip_value, gradient_clip_value, out=self.b[i])
+                # Lan truyền xuôi
+                output = self.forward_propagation(X_batch)
 
-            # Compute loss and accuracy
-            loss = self.compute_loss(output, y)
-            predictions = np.argmax(output, axis=1)
-            labels = np.argmax(y, axis=1)
-            accuracy = np.mean(predictions == labels)
+                # Tính mất mát (Loss)
+                loss = self.compute_loss(output, y_batch)
 
-            # Learning rate decay (adjust after every epoch)
-            self.learning_rate *= decay_factor
+                # Lan truyền ngược
+                self.backward_propagation(X_batch, y_batch)
 
-            print(f'Epoch {epoch + 1}, Loss: {loss:.4f}, Accuracy: {accuracy * 100:.2f}%, Learning Rate: {self.learning_rate:.6f}')
+                # Cập nhật trọng số và bias
+                self.update_weights()
+
+            print(f"Epoch {epoch + 1}/{self.epoch}, Loss: {loss}")
 
     def predict(self, X):
-        output = self.forward(X)
-        return np.argmax(output, axis=1)
+        output = self.forward_propagation(X)
+        return np.argmax(output, axis=1)  # Dự đoán lớp với giá trị xác suất cao nhất
