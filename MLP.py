@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import json
 
 
 def relu_prime(x):
@@ -98,6 +100,7 @@ class MLP:
         correct_predictions = np.sum(predictions == y)
         accuracy = correct_predictions / X.shape[0]
         return accuracy
+
     def train(self, X_train, y_train, batch_size=32):
         m = X_train.shape[0]
         for epoch in range(self.epoch):
@@ -118,7 +121,59 @@ class MLP:
                 self.update_weights()
 
             print(f"Epoch {epoch + 1}/{self.epoch}, Loss: {loss}")
+        self.save_model()
 
     def predict(self, X):
         output = self.forward_propagation(X)
-        return np.argmax(output, axis=1)  # Dự đoán lớp với giá trị xác suất cao nhất
+        return np.argmax(output, axis=1)
+
+    def save_model(self):
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        os.makedirs(data_dir, exist_ok=True)
+
+        list_weight = []
+        for i in range(len(self.weights)):
+            list_weight.append(np.array(self.weights[i]).tolist())
+        file_path = os.path.join(data_dir, "model_weights.json")
+        # Lưu danh sách vào file JSON
+        with open(file_path, "w") as f:
+            json.dump(list_weight, f)
+
+        list_bias = []
+        for i in range(len(self.biases)):
+            list_bias.append(np.array(self.biases[i]).tolist())
+        file_path = os.path.join(data_dir, "model_bias.json")
+        with open(file_path, "w") as f:
+            json.dump(list_bias, f)
+        print(f"Dữ liệu đã được lưu!!")
+
+    def load_model(self):
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        weight_path = os.path.join(data_dir, 'model_weights.json')
+        bias_path = os.path.join(data_dir, 'model_bias.json')
+
+        if os.path.exists(weight_path) and os.path.exists(bias_path):
+            # Đọc trọng số từ file
+            with open(weight_path, "r") as f:
+                list_weight = json.load(f)
+            self.weights = [np.array(weight) for weight in list_weight]  # Chuyển lại thành mảng NumPy
+
+            # Đọc độ lệch từ file
+            with open(bias_path, "r") as f:
+                list_bias = json.load(f)
+            self.biases = [np.array(bias) for bias in list_bias]  # Chuyển lại thành mảng NumPy
+
+            print(f"Model đã được tải từ {weight_path} và {bias_path}.")
+        else:
+            print(f"Không tìm thấy file mô hình. Không thể tải mô hình từ {weight_path} hoặc {bias_path}.")
+
+    def check_and_train(self, X_train, y_train):
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        weights_path = os.path.join(data_dir, 'model_weights.json')
+        bias_path = os.path.join(data_dir, 'model_bias.json')
+
+        if os.path.exists(weights_path) and os.path.exists(bias_path):
+            self.load_model()
+        else:
+            print("Mô hình không có sẵn thực hiện train lại!!!")
+            self.train(X_train, y_train)
