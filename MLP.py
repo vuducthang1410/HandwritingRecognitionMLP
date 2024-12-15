@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import json
+import logging
 
 
 def relu_prime(x):
@@ -17,71 +18,51 @@ def relu(x):
 
 
 class MLP:
-    def __init__(self, features, hidden_layers, output_size, learning_rate, epoch):
+    def __init__(self, features, hidden_layers, output_size, learning_rate, epoch, callback=None):
         self.features = features
         self.hidden_layers = hidden_layers
         self.output_size = output_size
         self.learning_rate = learning_rate
         self.epoch = epoch
-
-        # Khởi tạo trọng số và bias
+        self.callback = callback
         self.weights = []
         self.biases = []
 
     def initialize_weights(self):
-        np.random.seed(42)  # Đảm bảo khởi tạo ngẫu nhiên tái lập được
-
-        # Xây dựng danh sách kích thước các lớp
+        np.random.seed(42)
         layer_sizes = [self.features] + self.hidden_layers + [self.output_size]
-
-        # Khởi tạo trọng số và bias cho các lớp
         for i in range(len(layer_sizes) - 1):
             weight_matrix = np.random.randn(layer_sizes[i], layer_sizes[i + 1]) * np.sqrt(2 / layer_sizes[i])
-            bias_vector = np.zeros((1, layer_sizes[i + 1]))  # Bias khởi tạo bằng 0
+            bias_vector = np.zeros((1, layer_sizes[i + 1]))
             self.weights.append(weight_matrix)
             self.biases.append(bias_vector)
 
     def forward_propagation(self, X):
-        self.a = []  # danh sách chứa các giá trị của activation
-        self.z = []  # danh sách chứa các giá trị của z
-
-        activation = X
-        self.a.append(activation)  # Lưu giá trị đầu vào (X) là giá trị đầu tiên của activation
-
-        # Lan truyền xuôi qua các lớp ẩn
+        self.a = [X]
+        self.z = []
         for i in range(len(self.hidden_layers)):
-            z = np.dot(activation, self.weights[i]) + self.biases[i]
+            z = np.dot(self.a[-1], self.weights[i]) + self.biases[i]
             self.z.append(z)
-            activation = relu(z)  # Áp dụng hàm ReLU
-            self.a.append(activation)  # Lưu giá trị activation
-
-        # Xử lý lớp đầu ra (softmax cho phân loại đa lớp)
-        z_output = np.dot(activation, self.weights[-1]) + self.biases[-1]
+            a = relu(z)
+            self.a.append(a)
+        z_output = np.dot(self.a[-1], self.weights[-1]) + self.biases[-1]
         self.z.append(z_output)
         output = softmax(z_output)
         self.a.append(output)
-
         return output
 
     def backward_propagation(self, X, y):
         m = X.shape[0]
         self.d_weights = []
         self.d_biases = []
-
-        # Tính gradient tại lớp đầu ra
-        delta = (self.a[-1] - y)  # Đối với softmax, lỗi là sự khác biệt giữa output và ground truth
-        dW = np.dot(self.a[-2].T, delta) / m
-        db = np.sum(delta, axis=0, keepdims=True) / m
-        self.d_weights.append(dW)
-        self.d_biases.append(db)
-
-        # Lan truyền ngược qua các lớp ẩn
-        for i in range(len(self.hidden_layers) - 1, -1, -1):
-            delta = np.dot(delta, self.weights[i + 1].T) * relu_prime(self.z[i])
+        delta = (self.a[-1] - y)
+        for i in range(len(self.hidden_layers), -1, -1):
             dW = np.dot(self.a[i].T, delta) / m
             db = np.sum(delta, axis=0, keepdims=True) / m
-            self.d_weights.insert(0, dW)  # Lưu gradient vào đúng vị trí
+            self.d_weights.insert(0, dW)
             self.d_biases.insert(0, db)
+            if i > 0:
+                delta = np.dot(delta, self.weights[i].T) * relu_prime(self.z[i - 1])
 
     def update_weights(self):
         for i in range(len(self.weights)):
@@ -90,90 +71,94 @@ class MLP:
 
     def compute_loss(self, y_pred, y_true):
         m = y_true.shape[0]
-        loss = -np.sum(y_true * np.log(y_pred)) / m  # Cross entropy loss
+        loss = -np.sum(y_true * np.log(np.clip(y_pred, 1e-10, 1.0))) / m
         return loss
 
     def compute_accuracy(self, X, y):
-        # Dự đoán nhãn
         predictions = self.predict(X)
-        # So sánh dự đoán với nhãn thực
-        correct_predictions = np.sum(predictions == y)
-        accuracy = correct_predictions / X.shape[0]
-        return accuracy
+        return np.mean(predictions == y)
 
     def train(self, X_train, y_train, batch_size=32):
-        m = X_train.shape[0]
-        for epoch in range(self.epoch):
-            for i in range(0, m, batch_size):
-                X_batch = X_train[i:i + batch_size]
-                y_batch = y_train[i:i + batch_size]
+        try:
+            m = X_train.shape[0]
+            for epoch in range(self.epoch):
+                epoch_loss = 0
+                for i in range(0, m, batch_size):
+                    X_batch = X_train[i:i + batch_size]
+                    y_batch = y_train[i:i + batch_size]
+                    output = self.forward_propagation(X_batch)
+                    loss = self.compute_loss(output, y_batch)
+                    epoch_loss += loss
+                    self.backward_propagation(X_batch, y_batch)
+                    self.update_weights()
 
-                # Lan truyền xuôi
-                output = self.forward_propagation(X_batch)
+                avg_loss = epoch_loss / (m // batch_size)
+                if self.callback:
+                    self.callback(f"Epoch {epoch + 1}/{self.epoch}, Loss: {avg_loss:.4f}")
+                logging.info(f"Epoch {epoch + 1}/{self.epoch}, Loss: {avg_loss:.4f}")
 
-                # Tính mất mát (Loss)
-                loss = self.compute_loss(output, y_batch)
-
-                # Lan truyền ngược
-                self.backward_propagation(X_batch, y_batch)
-
-                # Cập nhật trọng số và bias
-                self.update_weights()
-
-            print(f"Epoch {epoch + 1}/{self.epoch}, Loss: {loss}")
-        self.save_model()
+            self.save_model()
+        except Exception as e:
+            logging.error(f"Lỗi trong quá trình huấn luyện: {str(e)}", exc_info=True)
+            raise
 
     def predict(self, X):
         output = self.forward_propagation(X)
         return np.argmax(output, axis=1)
 
     def save_model(self):
-        data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        os.makedirs(data_dir, exist_ok=True)
+        try:
+            data_dir = os.path.join(os.path.dirname(__file__), 'data')
+            os.makedirs(data_dir, exist_ok=True)
 
-        list_weight = []
-        for i in range(len(self.weights)):
-            list_weight.append(np.array(self.weights[i]).tolist())
-        file_path = os.path.join(data_dir, "model_weights.json")
-        # Lưu danh sách vào file JSON
-        with open(file_path, "w") as f:
-            json.dump(list_weight, f)
+            weights_path = os.path.join(data_dir, "model_weights.json")
+            biases_path = os.path.join(data_dir, "model_bias.json")
 
-        list_bias = []
-        for i in range(len(self.biases)):
-            list_bias.append(np.array(self.biases[i]).tolist())
-        file_path = os.path.join(data_dir, "model_bias.json")
-        with open(file_path, "w") as f:
-            json.dump(list_bias, f)
-        print(f"Dữ liệu đã được lưu!!")
+            with open(weights_path, "w") as f:
+                json.dump([w.tolist() for w in self.weights], f)
+
+            with open(biases_path, "w") as f:
+                json.dump([b.tolist() for b in self.biases], f)
+
+            logging.info(f"Model saved successfully to {data_dir}")
+        except Exception as e:
+            logging.error(f"Error saving model: {str(e)}", exc_info=True)
+            raise
 
     def load_model(self):
-        data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        weight_path = os.path.join(data_dir, 'model_weights.json')
-        bias_path = os.path.join(data_dir, 'model_bias.json')
+        try:
+            data_dir = os.path.join(os.path.dirname(__file__), 'data')
+            weight_path = os.path.join(data_dir, 'model_weights.json')
+            bias_path = os.path.join(data_dir, 'model_bias.json')
 
-        if os.path.exists(weight_path) and os.path.exists(bias_path):
-            # Đọc trọng số từ file
-            with open(weight_path, "r") as f:
-                list_weight = json.load(f)
-            self.weights = [np.array(weight) for weight in list_weight]  # Chuyển lại thành mảng NumPy
+            if os.path.exists(weight_path) and os.path.exists(bias_path):
+                with open(weight_path, "r") as f:
+                    list_weight = json.load(f)
+                self.weights = [np.array(weight) for weight in list_weight]
 
-            # Đọc độ lệch từ file
-            with open(bias_path, "r") as f:
-                list_bias = json.load(f)
-            self.biases = [np.array(bias) for bias in list_bias]  # Chuyển lại thành mảng NumPy
+                with open(bias_path, "r") as f:
+                    list_bias = json.load(f)
+                self.biases = [np.array(bias) for bias in list_bias]
 
-            print(f"Model đã được tải từ {weight_path} và {bias_path}.")
-        else:
-            print(f"Không tìm thấy file mô hình. Không thể tải mô hình từ {weight_path} hoặc {bias_path}.")
+                logging.info(f"Model loaded successfully from {weight_path} and {bias_path}")
+            else:
+                raise FileNotFoundError(f"Model files not found at {weight_path} or {bias_path}")
+        except Exception as e:
+            logging.error(f"Error loading model: {str(e)}", exc_info=True)
+            raise
 
     def check_and_train(self, X_train, y_train):
         data_dir = os.path.join(os.path.dirname(__file__), 'data')
         weights_path = os.path.join(data_dir, 'model_weights.json')
         bias_path = os.path.join(data_dir, 'model_bias.json')
-        # self.train(X_train, y_train)
+
         if os.path.exists(weights_path) and os.path.exists(bias_path):
             self.load_model()
         else:
-            print("Mô hình không có sẵn thực hiện train lại!!!")
+            logging.info("Model not found. Starting training...")
             self.train(X_train, y_train)
+
+    def train_again(self, X_train, y_train):
+        logging.info("Starting retraining process...")
+        self.train(X_train, y_train)
+
