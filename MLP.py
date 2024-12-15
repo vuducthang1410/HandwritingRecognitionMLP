@@ -84,13 +84,18 @@ class MLP:
             for epoch in range(self.epoch):
                 epoch_loss = 0
                 for i in range(0, m, batch_size):
-                    X_batch = X_train[i:i + batch_size]
-                    y_batch = y_train[i:i + batch_size]
-                    output = self.forward_propagation(X_batch)
-                    loss = self.compute_loss(output, y_batch)
-                    epoch_loss += loss
-                    self.backward_propagation(X_batch, y_batch)
-                    self.update_weights()
+                    try:
+                        X_batch = X_train[i:i + batch_size]
+                        y_batch = y_train[i:i + batch_size]
+                        output = self.forward_propagation(X_batch)
+                        loss = self.compute_loss(output, y_batch)
+                        epoch_loss += loss
+                        self.backward_propagation(X_batch, y_batch)
+                        self.update_weights()
+                    except Exception as batch_error:
+                        logging.error(f"Error processing batch {i // batch_size} in epoch {epoch}: {str(batch_error)}",
+                                      exc_info=True)
+                        raise
 
                 avg_loss = epoch_loss / (m // batch_size)
                 if self.callback:
@@ -99,7 +104,7 @@ class MLP:
 
             self.save_model()
         except Exception as e:
-            logging.error(f"Lỗi trong quá trình huấn luyện: {str(e)}", exc_info=True)
+            logging.error(f"Critical error in training process: {str(e)}", exc_info=True)
             raise
 
     def predict(self, X):

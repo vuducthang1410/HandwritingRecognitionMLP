@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QTextEdit, QHBoxLayout, QGroupBox
+from PyQt5.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QWidget, QTextEdit, QHBoxLayout, QGroupBox
 from PyQt5.QtGui import QImage
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 import cv2
@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 import logging
 
-# Set up logging
+# Thiết lập logging
 logging.basicConfig(filename='handwriting_recognition.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -25,14 +25,14 @@ class TrainThread(QThread):
 
     def run(self):
         try:
-            logging.info("Starting training process")
+            logging.info("Bắt đầu quá trình huấn luyện")
             data_set = DATA_SET(self.path_train_file, self.path_test_file)
             train_data, train_label = data_set.get_train_data()
             train_labels_one_hot = self.one_hot_encode(train_label)
 
             self.mlp_model.train_again(train_data, train_labels_one_hot)
             self.result_signal.emit("Huấn luyện lại mô hình thành công!!")
-            logging.info("Training process completed successfully")
+            logging.info("Quá trình huấn luyện hoàn tất thành công")
         except Exception as e:
             error_msg = f"Lỗi khi huấn luyện: {str(e)}"
             self.result_signal.emit(error_msg)
@@ -43,21 +43,20 @@ class TrainThread(QThread):
         one_hot[np.arange(labels.size), labels] = 1
         return one_hot
 
-
 class HandwritingInterface(QMainWindow):
     def __init__(self, path_train_file, path_test_file):
         super().__init__()
-        self.setWindowTitle("Handwriting Prediction")
+        self.setWindowTitle("Nhận dạng chữ viết tay")
         self.setGeometry(100, 100, 800, 600)
 
         self.canvas = Paint(self)
-        self.saveButton = QPushButton("Save", self)
+        self.saveButton = QPushButton("Lưu", self)
         self.saveButton.clicked.connect(self.save)
-        self.clearButton = QPushButton("Reset", self)
+        self.clearButton = QPushButton("Xóa", self)
         self.clearButton.clicked.connect(self.clear)
-        self.checkButton = QPushButton("Check", self)
+        self.checkButton = QPushButton("Kiểm tra", self)
         self.checkButton.clicked.connect(self.check)
-        self.trainButton = QPushButton("Train lại data", self)
+        self.trainButton = QPushButton("Huấn luyện lại", self)
         self.trainButton.clicked.connect(lambda: self.start_training(path_train_file, path_test_file))
         self.resultBox = QTextEdit()
 
@@ -67,12 +66,12 @@ class HandwritingInterface(QMainWindow):
 
     def setup_ui(self):
         mainLayout = QHBoxLayout()
-        canvasGroupBox = QGroupBox("Canvas")
+        canvasGroupBox = QGroupBox("Vùng vẽ")
         canvasLayout = QVBoxLayout()
         canvasLayout.addWidget(self.canvas)
         canvasGroupBox.setLayout(canvasLayout)
 
-        buttonGroupBox = QGroupBox("Controls")
+        buttonGroupBox = QGroupBox("Điều khiển")
         buttonLayout = QVBoxLayout()
         buttonLayout.addWidget(self.saveButton)
         buttonLayout.addWidget(self.clearButton)
@@ -81,7 +80,7 @@ class HandwritingInterface(QMainWindow):
         buttonLayout.addStretch()
         buttonGroupBox.setLayout(buttonLayout)
 
-        resultGroupBox = QGroupBox("Results")
+        resultGroupBox = QGroupBox("Kết quả")
         resultLayout = QVBoxLayout()
         resultLayout.addWidget(self.resultBox)
         resultGroupBox.setLayout(resultLayout)
@@ -98,18 +97,18 @@ class HandwritingInterface(QMainWindow):
         self.setCentralWidget(container)
 
     def initialize_model(self, path_train_file, path_test_file):
-        self.resultBox.setText("Đang cài đặt mô hình!!")
+        self.resultBox.setText("Đang cài đặt mô hình...")
         try:
             hidden_sizes = [700, 485, 250, 113, 53]
             self.mlp_model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=10, learning_rate=0.05, epoch=10,
-                                 callback=self.add_message_result)
+                                 callback=self.update_training_progress)
             self.mlp_model.initialize_weights()
             data_set = DATA_SET(path_train_file, path_test_file)
             train_data, train_label = data_set.get_train_data()
             train_labels_one_hot = self.one_hot_encode(train_label)
             self.mlp_model.check_and_train(train_data, train_labels_one_hot)
-            self.resultBox.setText("Cài đặt mô hình thành công!!")
-            logging.info("Model initialized successfully")
+            self.resultBox.setText("Cài đặt mô hình thành công!")
+            logging.info("Mô hình được khởi tạo thành công")
         except Exception as e:
             error_msg = f"Lỗi khi cài đặt mô hình: {str(e)}"
             self.resultBox.setText(error_msg)
@@ -127,6 +126,10 @@ class HandwritingInterface(QMainWindow):
 
     def update_result(self, result):
         self.resultBox.setText(result)
+
+    def update_training_progress(self, message):
+        self.resultBox.append(message)
+        QApplication.processEvents()  # Cập nhật giao diện người dùng
 
     def one_hot_encode(self, labels, num_classes=10):
         one_hot = np.zeros((labels.size, num_classes))
@@ -172,10 +175,7 @@ class HandwritingInterface(QMainWindow):
         prediction = self.mlp_model.predict(img_data)
         return prediction[0]
 
-    def add_message_result(self, label):
-        self.resultBox.setText(f"{label}")
-
     def closeEvent(self, event):
-        logging.info("Application closing")
+        logging.info("Ứng dụng đang đóng")
         super().closeEvent(event)
 
