@@ -171,7 +171,7 @@ class MLP:
         data_dir = os.path.join(os.path.dirname(__file__), 'data')
         weights_path = os.path.join(data_dir, 'model_weights.json')
         bias_path = os.path.join(data_dir, 'model_bias.json')
-
+        # self.train(X_train, y_train)
         if os.path.exists(weights_path) and os.path.exists(bias_path):
             self.load_model()
         else:

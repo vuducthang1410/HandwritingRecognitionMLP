@@ -1,12 +1,13 @@
-import tkinter as tk
-
+from PyQt5.QtWidgets import QApplication
+import sys
 from UI.HandwritingInterface import HandwritingInterface
 
 if '__main__' == __name__:
     # # Đường dẫn đến file dữ liệu
-    path_train_file = 'D:\\DeepLearning\\HandwritingRecognitionMLP\\data\\emnist-mnist-train.csv'
-    path_test_file = 'D:\\DeepLearning\\HandwritingRecognitionMLP\\data\\emnist-mnist-test.csv'
+    path_train_file = 'data/emnist-mnist-train.csv'
+    path_test_file = 'data/emnist-mnist-test.csv'
 
-    root = tk.Tk()
-    app = HandwritingInterface(root, path_train_file, path_test_file)
-    root.mainloop()
+    app = QApplication(sys.argv)
+    window = HandwritingInterface(path_train_file, path_test_file)
+    window.show()
+    sys.exit(app.exec_())
