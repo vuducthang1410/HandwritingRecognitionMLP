@@ -1,0 +1,101 @@
+2024-12-16 00:45:07,163 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:45:07,175 - INFO - Model initialized successfully
+2024-12-16 00:45:45,030 - INFO - Starting training process
+2024-12-16 00:45:47,626 - INFO - Starting retraining process...
+2024-12-16 00:46:35,066 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:46:35,075 - INFO - Model initialized successfully
+2024-12-16 00:46:36,952 - INFO - Starting training process
+2024-12-16 00:46:39,518 - INFO - Starting retraining process...
+2024-12-16 00:48:56,942 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:48:56,951 - INFO - Model initialized successfully
+2024-12-16 00:48:59,534 - INFO - Starting training process
+2024-12-16 00:49:02,027 - INFO - Starting retraining process...
+2024-12-16 00:51:52,289 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:51:52,298 - INFO - Model initialized successfully
+2024-12-16 00:51:53,949 - INFO - Starting training process
+2024-12-16 00:51:56,660 - INFO - Starting retraining process...
+2024-12-16 00:52:20,518 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:52:20,518 - INFO - Model initialized successfully
+2024-12-16 00:52:47,807 - INFO - Starting training process
+2024-12-16 00:52:50,501 - INFO - Starting retraining process...
+2024-12-16 00:53:19,509 - INFO - Epoch 1/10, Loss: 0.0343
+2024-12-16 00:53:59,751 - INFO - Epoch 2/10, Loss: 0.0141
+2024-12-16 00:54:36,996 - INFO - Epoch 3/10, Loss: 0.0082
+2024-12-16 00:55:48,836 - INFO - Epoch 4/10, Loss: 0.0053
+2024-12-16 00:56:10,114 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:56:10,126 - INFO - Model initialized successfully
+2024-12-16 00:56:21,954 - INFO - Starting training process
+2024-12-16 00:56:25,414 - INFO - Starting retraining process...
+2024-12-16 00:58:45,201 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 00:58:45,210 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-16 00:58:50,517 - INFO - B\u1eaft \u0111\u1ea7u quá trình hu\u1ea5n luy\u1ec7n
+2024-12-16 00:58:52,970 - INFO - Starting retraining process...
+2024-12-16 00:59:20,357 - INFO - Epoch 1/10, Loss: 0.0343
+2024-12-16 00:59:46,453 - INFO - Epoch 2/10, Loss: 0.0141
+2024-12-16 01:00:12,540 - INFO - Epoch 3/10, Loss: 0.0082
+2024-12-16 01:00:38,885 - INFO - Epoch 4/10, Loss: 0.0053
+2024-12-16 01:01:05,033 - INFO - Epoch 5/10, Loss: 0.0035
+2024-12-16 01:01:31,380 - INFO - Epoch 6/10, Loss: 0.0016
+2024-12-16 01:01:57,497 - INFO - Epoch 7/10, Loss: 0.0003
+2024-12-16 01:02:23,765 - INFO - Epoch 8/10, Loss: 0.0001
+2024-12-16 01:02:50,803 - INFO - Epoch 9/10, Loss: 0.0001
+2024-12-16 01:03:18,198 - INFO - Epoch 10/10, Loss: 0.0001
+2024-12-16 01:03:19,861 - INFO - Model saved successfully to D:\DeepLearning\HandwritingRecognitionMLP\data
+2024-12-16 01:03:19,861 - INFO - Quá trình hu\u1ea5n luy\u1ec7n hoàn t\u1ea5t thành công
+2024-12-16 01:11:18,721 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-16 10:51:08,974 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 10:51:08,985 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-16 10:53:40,783 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-16 10:53:46,824 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 10:53:46,834 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-16 13:49:11,249 - ERROR - L\u1ed7i khi cài \u0111\u1eb7t mô hình: index 36 is out of bounds for axis 1 with size 10
+Traceback (most recent call last):
+  File "D:\DeepLearning\HandwritingRecognitionMLP\UI\HandwritingInterface.py", line 111, in initialize_model
+    train_labels_one_hot = self.one_hot_encode(train_label)
+  File "D:\DeepLearning\HandwritingRecognitionMLP\UI\HandwritingInterface.py", line 139, in one_hot_encode
+    one_hot[np.arange(labels.size), labels] = 1
+IndexError: index 36 is out of bounds for axis 1 with size 10
+2024-12-16 13:50:06,529 - ERROR - L\u1ed7i khi cài \u0111\u1eb7t mô hình: index 36 is out of bounds for axis 1 with size 10
+Traceback (most recent call last):
+  File "D:\DeepLearning\HandwritingRecognitionMLP\UI\HandwritingInterface.py", line 111, in initialize_model
+    train_labels_one_hot = self.one_hot_encode(train_label)
+  File "D:\DeepLearning\HandwritingRecognitionMLP\UI\HandwritingInterface.py", line 139, in one_hot_encode
+    one_hot[np.arange(labels.size), labels] = 1
+IndexError: index 36 is out of bounds for axis 1 with size 10
+2024-12-16 13:51:07,741 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-16 13:51:07,749 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-16 13:51:37,619 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-16 13:52:18,729 - INFO - Model not found. Starting training...
+2024-12-16 13:55:02,473 - ERROR - Error loading model: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "D:\DeepLearning\HandwritingRecognitionMLP\MLP.py", line 141, in load_model
+    list_weight = json.load(f)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-16 13:55:02,516 - ERROR - L\u1ed7i khi cài \u0111\u1eb7t mô hình: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "D:\DeepLearning\HandwritingRecognitionMLP\UI\HandwritingInterface.py", line 112, in initialize_model
+    self.mlp_model.check_and_train(train_data, train_labels_one_hot)
+  File "D:\DeepLearning\HandwritingRecognitionMLP\MLP.py", line 161, in check_and_train
+    self.load_model()
+  File "D:\DeepLearning\HandwritingRecognitionMLP\MLP.py", line 141, in load_model
+    list_weight = json.load(f)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-16 13:57:10,907 - INFO - B\u1eaft \u0111\u1ea7u quá trình hu\u1ea5n luy\u1ec7n
+2024-12-16 13:57:43,369 - INFO - Starting retraining process...
+2024-12-16 14:02:22,573 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng

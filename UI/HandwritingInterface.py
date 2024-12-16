@@ -1,14 +1,17 @@
-from PyQt5.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QWidget, QTextEdit, QHBoxLayout, QGroupBox
-from PyQt5.QtGui import QImage
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
-import cv2
-import numpy as np
-from MLP import MLP
-from DATA_SET import DATA_SET
-from UI.PaintUI import Paint
+import logging
 import os
 from datetime import datetime
-import logging
+
+import cv2
+import numpy as np
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtGui import QImage
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QVBoxLayout, QWidget, QTextEdit, QHBoxLayout, \
+    QGroupBox
+
+from DATA_SET import DATA_SET
+from MLP import MLP
+from UI.PaintUI import Paint
 
 # Thiết lập logging
 logging.basicConfig(filename='handwriting_recognition.log', level=logging.INFO,
@@ -38,7 +41,7 @@ class TrainThread(QThread):
             self.result_signal.emit(error_msg)
             logging.error(error_msg, exc_info=True)
 
-    def one_hot_encode(self, labels, num_classes=10):
+    def one_hot_encode(self, labels, num_classes=62):
         one_hot = np.zeros((labels.size, num_classes))
         one_hot[np.arange(labels.size), labels] = 1
         return one_hot
@@ -100,7 +103,7 @@ class HandwritingInterface(QMainWindow):
         self.resultBox.setText("Đang cài đặt mô hình...")
         try:
             hidden_sizes = [700, 485, 250, 113, 53]
-            self.mlp_model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=10, learning_rate=0.05, epoch=10,
+            self.mlp_model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=62, learning_rate=0.05, epoch=10,
                                  callback=self.update_training_progress)
             self.mlp_model.initialize_weights()
             data_set = DATA_SET(path_train_file, path_test_file)
@@ -131,7 +134,7 @@ class HandwritingInterface(QMainWindow):
         self.resultBox.append(message)
         QApplication.processEvents()  # Cập nhật giao diện người dùng
 
-    def one_hot_encode(self, labels, num_classes=10):
+    def one_hot_encode(self, labels, num_classes=62):
         one_hot = np.zeros((labels.size, num_classes))
         one_hot[np.arange(labels.size), labels] = 1
         return one_hot
@@ -178,4 +181,3 @@ class HandwritingInterface(QMainWindow):
     def closeEvent(self, event):
         logging.info("Ứng dụng đang đóng")
         super().closeEvent(event)
-
