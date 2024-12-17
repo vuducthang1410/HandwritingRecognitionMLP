@@ -75,8 +75,8 @@ class MLP:
         return loss
 
     def compute_accuracy(self, X, y):
-        predictions = self.predict(X)
-        return np.mean(predictions == y)
+        top_5_indices, top_5_probs = self.predict(X)
+        return np.mean(top_5_indices[0] == y)
 
     def train(self, X_train, y_train, batch_size=32):
         try:
@@ -109,7 +109,11 @@ class MLP:
 
     def predict(self, X):
         output = self.forward_propagation(X)
-        return np.argmax(output, axis=1)
+        # data = np.sum(output)
+        # print(np.shape(output))
+        top_5_indices = np.argsort(output, axis=1)[:, -5:][:, ::-1]  # vị trí của 5 giá trị lớn nhất
+        top_5_probs = np.take_along_axis(output, top_5_indices, axis=1)  # xác xuất tương ứng của các vị trí
+        return top_5_indices, top_5_probs
 
     def save_model(self):
         try:
@@ -156,7 +160,6 @@ class MLP:
         data_dir = os.path.join(os.path.dirname(__file__), 'data')
         weights_path = os.path.join(data_dir, 'model_weights.json')
         bias_path = os.path.join(data_dir, 'model_bias.json')
-
         if os.path.exists(weights_path) and os.path.exists(bias_path):
             self.load_model()
         else:
@@ -166,4 +169,3 @@ class MLP:
     def train_again(self, X_train, y_train):
         logging.info("Starting retraining process...")
         self.train(X_train, y_train)
-

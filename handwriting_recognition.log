@@ -99,3 +99,67 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 2024-12-16 13:57:10,907 - INFO - B\u1eaft \u0111\u1ea7u quá trình hu\u1ea5n luy\u1ec7n
 2024-12-16 13:57:43,369 - INFO - Starting retraining process...
 2024-12-16 14:02:22,573 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 10:05:54,459 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:05:54,498 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:06:47,396 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 10:07:33,497 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:07:33,528 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:12:44,304 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:12:44,333 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:14:20,322 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:14:20,358 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:15:49,632 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:15:49,666 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:43:50,194 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:43:50,225 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 10:44:58,249 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 10:44:58,279 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:37:50,127 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:37:50,167 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:38:07,313 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 13:39:01,365 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:39:01,400 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:40:03,908 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:40:03,937 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:40:14,647 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 13:46:46,222 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:46:46,250 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:48:44,255 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:48:44,286 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:57:24,607 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:57:24,643 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 13:57:38,705 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 13:58:40,818 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 13:58:40,845 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:00:48,359 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:00:48,390 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:03:25,450 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:03:25,483 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:05:17,327 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:05:17,358 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:06:47,780 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:06:47,814 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:08:10,627 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:08:10,707 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:12:41,192 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:12:41,227 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:15:14,336 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:15:14,366 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:17:25,060 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:17:25,088 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:20:24,773 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:20:24,805 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:24:08,698 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 14:24:51,318 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:24:51,353 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:25:20,908 - INFO - B\u1eaft \u0111\u1ea7u quá trình hu\u1ea5n luy\u1ec7n
+2024-12-17 14:25:25,438 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 14:26:06,404 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:26:06,433 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:28:15,037 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 14:32:59,020 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:32:59,051 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:36:21,384 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng
+2024-12-17 14:37:34,597 - INFO - Model loaded successfully from D:\DeepLearning\HandwritingRecognitionMLP\data\model_weights.json and D:\DeepLearning\HandwritingRecognitionMLP\data\model_bias.json
+2024-12-17 14:37:34,633 - INFO - Mô hình \u0111\u01b0\u1ee3c kh\u1edfi t\u1ea1o thành công
+2024-12-17 14:40:37,296 - INFO - \u1ee8ng d\u1ee5ng \u0111ang \u0111óng

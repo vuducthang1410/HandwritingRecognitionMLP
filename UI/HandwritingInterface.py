@@ -17,6 +17,7 @@ from UI.PaintUI import Paint
 logging.basicConfig(filename='handwriting_recognition.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 class TrainThread(QThread):
     result_signal = pyqtSignal(str)
 
@@ -46,12 +47,14 @@ class TrainThread(QThread):
         one_hot[np.arange(labels.size), labels] = 1
         return one_hot
 
+
 class HandwritingInterface(QMainWindow):
-    def __init__(self, path_train_file, path_test_file):
+    def __init__(self, path_train_file, path_test_file, path_values_ACII_map, path_map_values_predict):
         super().__init__()
         self.setWindowTitle("Nhận dạng chữ viết tay")
         self.setGeometry(100, 100, 800, 600)
-
+        self.path_values_ACII_map = path_values_ACII_map
+        self.path_map_values_predict = path_map_values_predict
         self.canvas = Paint(self)
         self.saveButton = QPushButton("Lưu", self)
         self.saveButton.clicked.connect(self.save)
@@ -103,7 +106,8 @@ class HandwritingInterface(QMainWindow):
         self.resultBox.setText("Đang cài đặt mô hình...")
         try:
             hidden_sizes = [700, 485, 250, 113, 53]
-            self.mlp_model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=62, learning_rate=0.05, epoch=10,
+            self.mlp_model = MLP(features=28 * 28, hidden_layers=hidden_sizes, output_size=62, learning_rate=0.05,
+                                 epoch=10,
                                  callback=self.update_training_progress)
             self.mlp_model.initialize_weights()
             data_set = DATA_SET(path_train_file, path_test_file)
@@ -150,11 +154,16 @@ class HandwritingInterface(QMainWindow):
 
     def clear(self):
         self.canvas.clearImage()
+        self.resultBox.setText("Vui lòng vẽ để dự đoán!!!")
 
     def check(self):
         img = self.convert_img()
-        label_predict = self.predict_image(img)
-        self.resultBox.setText(f"Nhận dạng thành công! Nhãn dự đoán: {label_predict}")
+        top_5_indices, top_5_probs = self.predict_image(img)
+        self.resultBox.setText(f'Nhận dạng thành công! Nhãn dự đoán: ')
+        top_5_indices = np.array(top_5_indices).flatten()
+        top_5_probs=np.array(top_5_probs).flatten()
+        for i in range(len(top_5_indices)):
+            self.resultBox.append(f"{self.mappingResultPredictToASCII(top_5_indices[i])}: {top_5_probs[i] * 100:.4f}")
 
     def convert_img(self):
         img = self.canvas.getImage()
@@ -175,9 +184,25 @@ class HandwritingInterface(QMainWindow):
     def predict_image(self, image_path):
         img_data = self.preprocess_image(image_path)
         img_data = img_data.reshape(1, -1)
-        prediction = self.mlp_model.predict(img_data)
-        return prediction[0]
+        top_5_indices, top_5_probs = self.mlp_model.predict(img_data)
+        return top_5_indices, top_5_probs
 
     def closeEvent(self, event):
         logging.info("Ứng dụng đang đóng")
         super().closeEvent(event)
+
+    def mappingResultPredictToASCII(self, keyData):
+        result_dict = {}
+        with open(self.path_map_values_predict, 'r') as file:
+            data = file.readlines()
+        for line in data:
+            key, value = line.strip().split(' ')
+            result_dict[int(key)] = value
+        data1 = int(result_dict.get(int(keyData)))
+        ascii_dict = {}
+        with open(self.path_values_ACII_map, 'r') as file:
+            data = file.readlines()
+        for line in data:
+            key, value = line.strip().split(' ')
+            ascii_dict[int(key)] = value
+        return ascii_dict.get(data1)
